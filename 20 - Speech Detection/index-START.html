@@ -10,8 +10,55 @@
   </div>
 
 <script>
+  // Allows us to type on the specified spot on the screen.
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true;
+
+  let p = document.createElement('p');
+  const words = document.querySelector('.words');
+  words.appendChild(p);
+
+  recognition.addEventListener('result', e => {
+    // console.log(e);  // This will show the SpeachRecognitionEvent in the console which we can dive into to get other pieces to pull what it logged us saying.
+    const transcript = Array.from(e.results)
+      .map(result => result[0])
+      .map(result => result.transcript)
+      .join('');
+
+      // This allows the text to be put into the textbox when we speak
+      p.textContent = transcript;
+      // then we need to have it keep the info we speak on the page so that when we stop speaking it doesn't just get replaced as such with only the above command.
+      if(e.results[0].isFinal) {
+        p = document.createElement('p');
+        words.appendChild(p);
+      }
+      // Then you could get really crazy with it and make it hook up to things. Like a weather api so that when you speak a word/command it recognizes, then it would run that function to do the command or what have you.
+      // fun simple example is to have the console log show a symbol when you say a word that it recognizes
+      if(transcript.includes('show me a winky face')) {
+        p.textContent = " ;P ";
+        words.appendChild(p);
+      } else if(transcript.includes('change background color to Blue')) {
+        let color = "blue";
+        document.body.style.background = color;
+      } else if(transcript.includes('change background color to Green')) {
+        let color = "green";
+        document.body.style.background = color;
+      } else if(transcript.includes('change background color to Orange')) {
+        let color = "orange";
+        document.body.style.background = color;
+      } else if(transcript.includes('change background color to default')) {
+        let color = "#ffc600";
+        document.body.style.background = color;
+      } 
+
+    console.log(transcript);  
+  })
+
+  recognition.addEventListener('end', recognition.start);
+
+  recognition.start();
 
 </script>
 

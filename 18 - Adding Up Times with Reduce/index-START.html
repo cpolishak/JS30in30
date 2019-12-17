@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <title>Videos</title>
 </head>
+<!-- We are just adding up the total amount of time based on the numbers in in video's data-time -->
+<p>See console log to view total amount of time for each video added up to a grand total time</p>
 <body>
   <ul class="videos">
     <li data-time="5:43">
@@ -181,7 +183,36 @@
       Video 58
     </li>
   </ul>
+
 <script>
+
+  const timeNodes = Array.from(document.querySelectorAll('[data-time]'));
+
+  // Take in the array of timeNodes from above
+  const seconds = timeNodes
+    // convert dataset.time into mins and seconds
+    .map(node => node.dataset.time)
+    // convert the above in to seconds
+    .map(timeCode => {
+      const [mins, secs] = timeCode.split(':').map(parseFloat);
+      return (mins * 60) + secs;
+     
+    })
+    // convert the above into whole number seconds
+    .reduce((total, vidSeconds) => total + vidSeconds);
+
+
+    let secondsLeft = seconds;
+    const hours = Math.floor(secondsLeft / 3600);
+    secondsLeft = secondsLeft % 3600;
+    
+
+    const mins = Math.floor(secondsLeft / 60);
+    secondsLeft = secondsLeft % 60;
+
+    console.log(hours, mins, secondsLeft)
+
 </script>
+
 </body>
 </html>

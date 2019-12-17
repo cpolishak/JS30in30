@@ -40,9 +40,34 @@
   }
 </style>
 
-<button></button>
+<button>Button</button>
+
 <script>
 
+const divs = document.querySelectorAll('div');
+const button = document.querySelector('button');
+
+function logText(e) {
+  // stop propagation keeps it from bubbling up. In this case showing the other classes from the higher level divs
+  e.stopPropagation();
+  console.log(this.classList.value);
+}
+
+divs.forEach(div => div.addEventListener('click', logText, {
+  // capture below will 
+  capture: false,
+  // once will unbind the clicked div and it cannot be clicked again until page reload. 
+  // This is useful for when you don't want someone clicking something more than once. Like in a check out for a store.
+  once: true
+}));
+
+button.addEventListener('click', () => {
+  console.log('Clicked the button');
+}, {
+  once: true
+})
+
 </script>
+
 </body>
 </html>

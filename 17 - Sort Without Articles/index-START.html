@@ -17,6 +17,16 @@
       min-height: 100vh;
     }
 
+    #list {
+      margin: auto;
+    }
+
+    #list p {
+      font-weight: 600;
+      margin: auto;
+      text-align: center;
+    }
+
     #bands {
       list-style: inside square;
       font-size: 20px;
@@ -29,7 +39,8 @@
     
     #bands li {
       border-bottom: 1px solid #efefef;
-      padding: 20px;
+      padding: 15px;
+      border-style:outset;
     }
     
     #bands li:last-child {
@@ -43,11 +54,33 @@
 
   </style>
 
-  <ul id="bands"></ul>
+  <div id="list">
+    <p>Bands from A - Z</p>
+    <ul id="bands"></ul>  
+  </div>  
+
 
 <script>
+
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
+// we need to sort through the array and organize alphabetically.
+// *** Note: we want to exclude the "A" or "The" before bands names ***
+
+// strip function + regex will remove the a, the, an from the strings as it goes through items or arrays
+function strip(bandName) {
+  return bandName.replace(/^(a |the |an )/i, '').trim();
+}
+
+const sortedBands = bands.sort((a, b) => {
+  // the ternary operator here will check the alphabetical order while applying the stip function we set above
+  return strip(a) > strip(b) ? 1 : -1;
+});
+
+// to display the bands as organized on the screen
+document.querySelector('#bands').innerHTML = sortedBands.map(band => `<li>${band}</li>`).join('');
+
+console.log(sortedBands);
 
 </script>
 
