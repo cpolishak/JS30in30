@@ -5,7 +5,7 @@
   <title>Follow Along Nav</title>
 </head>
 <body>
-  <h2>Cool</h2>
+  <h2>Cool Dropdowns, Bro!</h2>
   <nav class="top">
     <div class="dropdownBackground">
       <span class="arrow"></span>
@@ -146,6 +146,14 @@
     display: block;
   }
 
+  .trigger-enter-active {
+    opacity: 1;
+  }
+
+  .trigger-enter .dropdown {
+    display: block;
+  }
+
   .trigger-enter-active .dropdown {
     opacity: 1;
   }
@@ -220,6 +228,60 @@
 </style>
 
 <script>
+
+const triggers = document.querySelectorAll('.cool > li');
+const background = document.querySelector('.dropdownBackground');
+const nav = document.querySelector('.top');
+
+function handleEnter() {
+  // console.log('Enter');
+  this.classList.add('trigger-enter');
+  setTimeout( () => this.classList.contains('trigger-enter') && this.classList.add('trigger-enter-active'), 150);
+  // setTimeout( () => {
+  //   if(this.classList.contains('trigger-enter')) {
+  //   this.classList.add('trigger-enter-active')
+  //   }
+  // }, 150);
+  background.classList.add('open');
+
+  const dropdown = this.querySelector('.dropdown');
+  // console.log(dropdown);
+  const dropdownCoords = dropdown.getBoundingClientRect();
+  // console.log(dropdownCoords);
+  const navCoords = nav.getBoundingClientRect();
+
+  const coords = {
+    height: dropdownCoords.height,
+    width: dropdownCoords.width,
+    top: dropdownCoords.top - navCoords.top,
+    left: dropdownCoords.left - navCoords.left
+  };
+
+  background.style.setProperty('width', `${coords.width}px`);
+  background.style.setProperty('height', `${coords.height}px`);
+  background.style.setProperty('transform', `translate(${coords.left}px, ${coords.top}px)`);
+
+  // the setTimeout above does the same as the syntax below, but it's ES6 and uses less space.
+  // setTimeout( () => { 
+  //   this.classList.add('trigger-enter-active');
+  // }, 150);
+};
+
+function handleLeave() {
+  // console.log('Leave');
+  this.classList.remove('trigger-enter', 'trigger-enter-active');
+  background.classList.remove('open');
+  // setTimeout( () => this.classList.remove('trigger-enter-active'), 150);
+  // the setTimeout above does the same as the syntax below, but it's ES6 and uses less space.
+  // setTimeout( () => { 
+  //   this.classList.remove('trigger-enter-active');
+  // }, 150);
+};
+
+triggers.forEach(trigger => trigger.addEventListener('mouseenter', handleEnter));
+triggers.forEach(trigger => trigger.addEventListener('mouseleave', handleLeave));
+
+
 </script>
 
 </body>

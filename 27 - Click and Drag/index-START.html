@@ -32,9 +32,47 @@
     <div class="item item23">23</div>
     <div class="item item24">24</div>
     <div class="item item25">25</div>
+    <div class="item item25">26</div>
+    <div class="item item25">27</div>
+    <div class="item item25">28</div>
+    <div class="item item25">29</div>
+    <div class="item item25">30</div>
   </div>
 
+
 <script>
+
+  const slider = document.querySelector('.items');
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  slider.addEventListener('mousedown', (e) => {
+    isDown = true;
+    slider.classList.add('active');
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+    console.log(startX);
+  });
+
+  slider.addEventListener('mouseleave', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  });
+
+  slider.addEventListener('mouseup', () => {
+    isDown = false;
+    slider.classList.remove('active');
+  });
+
+  slider.addEventListener('mousemove', (e) => {
+    if(!isDown) return;  // stops the function from running automatically on page load. 
+    e.preventDefault();
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 3;  // determines how far we will move from the initial click. The multiply makes the scrolling faster.
+    slider.scrollLeft = scrollLeft - walk;  // makes the scroll start from the click point and subtracts the distance moved from there.
+  });
+
 </script>
 
   </body>
